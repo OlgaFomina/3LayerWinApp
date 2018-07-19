@@ -12,7 +12,7 @@ namespace DAL
     {
         string CS = System.Configuration.ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 
-        private DataTable GetPhonesData()
+        public DataTable GetPhonesData()
         {
             using (SqlConnection connection = new SqlConnection(CS))
             {

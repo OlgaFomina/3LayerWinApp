@@ -1,5 +1,7 @@
 ﻿
 
+using DAL;
+
 namespace _3LayerWinApp
 {
     partial class Form1
@@ -54,7 +56,8 @@ namespace _3LayerWinApp
             ((System.ComponentModel.ISupportInitialize)(this.gvPhonesList)).EndInit();
             this.ResumeLayout(false);
 
-            loadData();
+            DbData db = new DbData();
+            gvPhonesList.DataSource = db.GetPhonesData();
         }
 
         #endregion
