@@ -1,12 +1,11 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
+﻿
+
+using DAL;
 
 namespace _3LayerWinApp
 {
     partial class Form1
     {
-        string CS = System.Configuration.ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -57,24 +56,13 @@ namespace _3LayerWinApp
             ((System.ComponentModel.ISupportInitialize)(this.gvPhonesList)).EndInit();
             this.ResumeLayout(false);
 
-            loadData();
+            DbData db = new DbData();
+            gvPhonesList.DataSource = db.GetPhonesData();
         }
 
         #endregion
 
-        private void loadData()
-        {
-            using (SqlConnection connection = new SqlConnection(CS))
-            {
-                connection.Open();
-                SqlCommand selectCommand = new SqlCommand("SELECT * FROM Phone", connection);
-                SqlDataAdapter adapter = new SqlDataAdapter();
-                adapter.SelectCommand = selectCommand;
-                DataSet myDataSet = new DataSet();
-                adapter.Fill(myDataSet, "Ph");
-                gvPhonesList.DataSource = myDataSet.Tables["Ph"];
-            }
-        }
+
 
         private System.Windows.Forms.DataGridView gvPhonesList;
     }
