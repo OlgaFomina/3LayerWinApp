@@ -28,13 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.PhonesList = new System.Windows.Forms.ListView();
+            this.SuspendLayout();
+            // 
+            // PhonesList
+            // 
+            this.PhonesList.FullRowSelect = true;
+            this.PhonesList.GridLines = true;
+            this.PhonesList.Location = new System.Drawing.Point(12, 32);
+            this.PhonesList.Name = "PhonesList";
+            this.PhonesList.Size = new System.Drawing.Size(187, 406);
+            this.PhonesList.TabIndex = 0;
+            this.PhonesList.UseCompatibleStateImageBehavior = false;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.PhonesList);
+            this.Name = "Form1";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.ListView PhonesList;
     }
 }
 
