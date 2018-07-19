@@ -1,7 +1,13 @@
-﻿namespace _3LayerWinApp
+﻿using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace _3LayerWinApp
 {
     partial class Form1
     {
+        string CS = System.Configuration.ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+
         /// <summary>
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -28,34 +34,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PhonesList = new System.Windows.Forms.ListView();
+            this.gvPhonesList = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.gvPhonesList)).BeginInit();
             this.SuspendLayout();
             // 
-            // PhonesList
+            // gvPhonesList
             // 
-            this.PhonesList.FullRowSelect = true;
-            this.PhonesList.GridLines = true;
-            this.PhonesList.Location = new System.Drawing.Point(12, 32);
-            this.PhonesList.Name = "PhonesList";
-            this.PhonesList.Size = new System.Drawing.Size(187, 406);
-            this.PhonesList.TabIndex = 0;
-            this.PhonesList.UseCompatibleStateImageBehavior = false;
+            this.gvPhonesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvPhonesList.Location = new System.Drawing.Point(30, 27);
+            this.gvPhonesList.Name = "gvPhonesList";
+            this.gvPhonesList.Size = new System.Drawing.Size(240, 150);
+            this.gvPhonesList.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.PhonesList);
+            this.Controls.Add(this.gvPhonesList);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.gvPhonesList)).EndInit();
             this.ResumeLayout(false);
 
+            loadData();
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView PhonesList;
+        private void loadData()
+        {
+            using (SqlConnection connection = new SqlConnection(CS))
+            {
+                connection.Open();
+                SqlCommand selectCommand = new SqlCommand("SELECT * FROM Phone", connection);
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = selectCommand;
+                DataSet myDataSet = new DataSet();
+                adapter.Fill(myDataSet, "Ph");
+                gvPhonesList.DataSource = myDataSet.Tables["Ph"];
+            }
+        }
+
+        private System.Windows.Forms.DataGridView gvPhonesList;
     }
 }
 
