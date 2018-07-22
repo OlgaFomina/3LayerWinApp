@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data;
 using System.Data.SqlClient;
+using BLL;
+using BLL.Services;
 
 namespace _3LayerWinApp
 {
@@ -53,6 +55,12 @@ namespace _3LayerWinApp
             // Отображаем данные
             gvPhonesList.DataSource = dataSet.Tables["Phones"];
             gvOrders.DataSource = dataSet.Tables["Orders"];
+
+            // Заполнить комбобокс 
+            cbPhones.DataSource =            dataSet.Tables["Phones"];
+            cbPhones.DisplayMember = "Name";
+            cbPhones.ValueMember = "Id";
+
         }
 
         private void loadPhonesTo_gvPhonesList()
@@ -100,6 +108,28 @@ namespace _3LayerWinApp
             }
             text = text.TrimEnd(',');
             MessageBox.Show(text);
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OrderModel order = new OrderModel()
+            {
+                Address = tbAddress.Text,
+                Customer = tbCustomer.Text,
+                OrderedPhonesIds = new List<int> { (int)cbPhones.SelectedValue }
+            };
+            OrderService service = new OrderService();
+            bool result = service.MakeOrder(order);
+            if (result) {
+                MessageBox.Show("Success");
+                dataSet.Tables["Orders"].Clear();
+                dataSet.Tables["PhonesOrders"].Clear();
+                // перезагружаем данные
+                adapterOrders.Fill(dataSet, "Orders");
+                adapterPhonesOrders.Fill(dataSet, "PhonesOrders");
+            }
+            else MessageBox.Show("Failed");
 
         }
     }
